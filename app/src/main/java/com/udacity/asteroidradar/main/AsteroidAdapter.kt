@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.database.AsteroidEntities
 import com.udacity.asteroidradar.databinding.ListItemMainBinding
 
 class AsteroidAdapter(

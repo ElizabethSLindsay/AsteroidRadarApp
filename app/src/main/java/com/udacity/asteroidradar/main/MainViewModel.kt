@@ -16,6 +16,7 @@ class MainViewModel( private val dao: AsteroidDao) : ViewModel() {
 
 
     private fun addAsteroid(asteroid: Asteroid) {
+        Log.d("Add Asteriods","Asteroid Added")
         val newAsteroid = AsteroidEntities(
             id = asteroid.id,
             codename = asteroid.codename,
@@ -30,9 +31,11 @@ class MainViewModel( private val dao: AsteroidDao) : ViewModel() {
     }
 
     fun getAsteroidData() {
+        Log.d("Get Asteroid Data","Coroutine Launched")
         viewModelScope.launch {
             try {
                 val asteroidList = parseAsteroidsJsonResult(JSONObject(AsteroidApi.retrofitService.getAsteroids("" ,"", "DEMO_KEY")))
+                Log.d("Try Succeded",asteroidList.toString())
                 dao.clear()
                 for (asteroid in asteroidList) {
                     addAsteroid(asteroid)

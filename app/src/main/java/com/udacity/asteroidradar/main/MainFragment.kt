@@ -62,7 +62,8 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = AsteroidAdapter {  asteroid -> val action = MainFragmentDirections.actionShowDetail(asteroid)
+        val adapter = AsteroidAdapter {  asteroid ->
+            val action = MainFragmentDirections.actionShowDetail(asteroid)
             findNavController().navigate(action)
 
         }
