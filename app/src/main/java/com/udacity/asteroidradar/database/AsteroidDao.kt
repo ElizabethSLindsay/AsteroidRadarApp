@@ -12,12 +12,12 @@ import kotlinx.coroutines.flow.Flow
 interface AsteroidDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(asteroid: AsteroidEntities)
+    suspend fun insert(asteroid: AsteroidEntities)
 
     @Query("""
         DELETE FROM Asteroids
     """)
-    fun clear()
+    suspend fun clear()
 
     @Query("""
         SELECT * FROM Asteroids

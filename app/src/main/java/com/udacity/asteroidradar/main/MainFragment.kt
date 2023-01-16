@@ -15,6 +15,10 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.database.AsteroidEntities
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
@@ -24,12 +28,14 @@ class MainFragment : Fragment() {
         )
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
+
         viewModel.getAsteroidData()
 
         val imageUrl = "https://api.nasa.gov/planetary/apod?api_key=SNrG4C86m2Zxhx9b7HAAnOGdJQqB6BzYRLlTi0fp"
@@ -69,6 +75,7 @@ class MainFragment : Fragment() {
         }
         viewModel.allAsteroids.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+            Log.d("View Model Updated", viewModel.allAsteroids.value.toString())
         }
 
 
