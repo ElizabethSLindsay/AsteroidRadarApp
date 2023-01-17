@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
+    private lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by activityViewModels {
         AsteroidViewModelFactory(
             (activity?.application as BaseApplication).database.asteroidDao()
@@ -31,7 +33,7 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        val binding = FragmentMainBinding.inflate(inflater)
+        binding = FragmentMainBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
@@ -67,18 +69,18 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val adapter = AsteroidAdapter {  asteroid ->
+        val asteroidAdapter = AsteroidAdapter { asteroid ->
             val action = MainFragmentDirections.actionShowDetail(asteroid)
             findNavController().navigate(action)
-
+        }
+        binding.asteroidRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = asteroidAdapter
         }
         viewModel.allAsteroids.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            asteroidAdapter.submitList(it)
             Log.d("View Model Updated", viewModel.allAsteroids.value.toString())
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

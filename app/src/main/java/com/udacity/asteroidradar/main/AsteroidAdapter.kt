@@ -18,9 +18,7 @@ class AsteroidAdapter(
     ) : RecyclerView.ViewHolder(bindingListItem.root) {
 
         fun bindItem(asteroid: Asteroid) {
-            bindingListItem.asteroidName
-            bindingListItem.asteroidDate
-            bindingListItem.asteroidStatus
+            bindingListItem.asteroidListItem = asteroid
             if (asteroid.isPotentiallyHazardous) {
                 bindingListItem.asteroidStatus.setImageResource(R.drawable.ic_status_potentially_hazardous)
             } else {

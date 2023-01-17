@@ -21,7 +21,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@{asteroidListItem.codename}"
-            android:textAppearance="@android:style/TextAppearance.Material.Display1"
+            android:textSize="20sp"
             android:textColor="@color/default_text_color"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
