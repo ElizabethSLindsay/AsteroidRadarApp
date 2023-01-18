@@ -2,9 +2,7 @@ package com.udacity.asteroidradar.api
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.Constants.BASE_URL
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -19,7 +17,7 @@ private val moshi = Moshi.Builder()
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(ScalarsConverterFactory.create())
     .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl(Constants.BASE_URL)
+    .baseUrl(BASE_URL)
     .build()
 
 interface AsteroidApiService {
@@ -31,8 +29,21 @@ interface AsteroidApiService {
     ): String
 }
 
+interface PotDService {
+    @GET("https://api.nasa.gov/planetary/apod")
+    suspend fun getPotD(
+        @Query("api_key") apiKey: String
+    ): String
+}
+
 object AsteroidApi {
     val retrofitService : AsteroidApiService by lazy {
         retrofit.create(AsteroidApiService::class.java)
+    }
+}
+
+object PotDAPI{
+    val retrofitService: PotDService by lazy {
+        retrofit.create(PotDService::class.java)
     }
 }

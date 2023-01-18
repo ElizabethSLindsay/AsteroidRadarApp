@@ -1,25 +1,26 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
+import android.os.Debug
+import android.os.StrictMode
 import android.util.Log
+import android.util.Log.d
 import android.view.*
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.BaseApplication
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.database.AsteroidEntities
+import com.udacity.asteroidradar.database.PotD
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+
 
 class MainFragment : Fragment() {
 
@@ -40,29 +41,17 @@ class MainFragment : Fragment() {
 
         viewModel.getAsteroidData()
 
-        val imageUrl = "https://api.nasa.gov/planetary/apod?api_key=SNrG4C86m2Zxhx9b7HAAnOGdJQqB6BzYRLlTi0fp"
-
-        Picasso.with(binding.activityMainImageOfTheDay.context).load(imageUrl).fit().centerCrop()
-            .networkPolicy(NetworkPolicy.OFFLINE)
-
-            .into(binding.activityMainImageOfTheDay, object : Callback {
-                override fun onSuccess() {
-                    //No op
-                }
-
-                override fun onError() {
-                    Picasso.with(binding.activityMainImageOfTheDay.context).load(
-                        "https://apod.nasa.gov/apod/image/2001/STSCI-H-p2006a-h-1024x614.jpg")
-                        .placeholder(R.drawable.placeholder_picture_of_day)
-                        .error(R.drawable.ic_connection_error)
-                        .into(binding.activityMainImageOfTheDay)
-                }
+        viewModel.picture.observe(viewLifecycleOwner) {PotD ->
+            if (PotD != null && PotD.url != "") {
+                Log.d("PotD", PotD.toString())
+                getPictureOfTheDay(PotD.url)
+                binding.activityMainImageOfTheDay.contentDescription = getString(R.string.nasa_picture_of_day_content_description_format, PotD.title)
             }
-
-            )
-
+        }
 
         setHasOptionsMenu(true)
+
+        viewModel.getPictureOfTheDay()
 
         return binding.root
     }
@@ -79,7 +68,6 @@ class MainFragment : Fragment() {
         }
         viewModel.allAsteroids.observe(viewLifecycleOwner) {
             asteroidAdapter.submitList(it)
-            Log.d("View Model Updated", viewModel.allAsteroids.value.toString())
         }
     }
 
@@ -89,6 +77,19 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return true
+        when (item.itemId) {
+            R.id.show_all_menu -> viewModel.filterAsteroids("Week")
+            R.id.show_rent_menu -> viewModel.filterAsteroids("Today")
+            R.id.show_buy_menu -> viewModel.filterAsteroids("Week")
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun getPictureOfTheDay(imageUrl: String) {
+        Picasso.with(binding.activityMainImageOfTheDay.context).load(imageUrl).fit().centerCrop()
+            .networkPolicy(NetworkPolicy.OFFLINE)
+            .placeholder(R.drawable.placeholder_picture_of_day)
+            .error(R.drawable.ic_connection_error)
+            .into(binding.activityMainImageOfTheDay)
     }
 }

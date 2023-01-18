@@ -15,3 +15,11 @@ data class AsteroidEntities(
     val distanceFromEarth: Double,
     val isPotentiallyHazardous: Boolean
 )
+
+@Entity(tableName = "PotD")
+data class PotD(
+    @PrimaryKey
+    val mediaType: String,
+    val title: String,
+    val url: String
+)
