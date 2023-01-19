@@ -67,6 +67,7 @@ class MainFragment : Fragment() {
             adapter = asteroidAdapter
         }
         viewModel.allAsteroids.observe(viewLifecycleOwner) {
+            Log.d("Asteroids Updated", it.toString())
             asteroidAdapter.submitList(it)
         }
     }
@@ -77,6 +78,7 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d("Selected", item.toString())
         when (item.itemId) {
             R.id.show_all_menu -> viewModel.filterAsteroids("Week")
             R.id.show_rent_menu -> viewModel.filterAsteroids("Today")

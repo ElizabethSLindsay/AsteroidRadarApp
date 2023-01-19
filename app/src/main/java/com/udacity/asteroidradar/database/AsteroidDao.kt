@@ -30,14 +30,14 @@ interface AsteroidDao {
 
     @Query("""
         SELECT * FROM Asteroids
-        WHERE closeApproachDate> DATE('today')
+        WHERE closeApproachDate > DATE('now')
         ORDER BY closeApproachDate
     """)
     fun getAsteroids(): Flow<List<Asteroid>>
 
     @Query("""
         SELECT * FROM Asteroids
-        WHERE closeApproachDate = DATE('today')
+        WHERE closeApproachDate = DATE('now')
         ORDER BY closeApproachDate
     """)
     fun getToday(): Flow<List<Asteroid>>

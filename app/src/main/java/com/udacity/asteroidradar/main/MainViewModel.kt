@@ -44,6 +44,7 @@ class MainViewModel( private val dao: AsteroidDao) : ViewModel() {
         } else if (filter == "Today") {
             allAsteroids = dao.getToday().asLiveData()
         }
+        Log.d("Filtered",allAsteroids.value.toString())
     }
 
     fun getAsteroidData() {
