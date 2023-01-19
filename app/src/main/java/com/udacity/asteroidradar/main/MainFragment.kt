@@ -1,24 +1,16 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
-import android.os.Debug
-import android.os.StrictMode
 import android.util.Log
-import android.util.Log.d
 import android.view.*
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.BaseApplication
-import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.database.PotD
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 
@@ -32,8 +24,10 @@ class MainFragment : Fragment() {
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentMainBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
 
@@ -41,11 +35,12 @@ class MainFragment : Fragment() {
 
         viewModel.getAsteroidData()
 
-        viewModel.picture.observe(viewLifecycleOwner) {PotD ->
+        viewModel.picture.observe(viewLifecycleOwner) { PotD ->
             if (PotD != null && PotD.url != "") {
                 Log.d("PotD", PotD.toString())
                 getPictureOfTheDay(PotD.url)
-                binding.activityMainImageOfTheDay.contentDescription = getString(R.string.nasa_picture_of_day_content_description_format, PotD.title)
+                binding.activityMainImageOfTheDay.contentDescription =
+                    getString(R.string.nasa_picture_of_day_content_description_format, PotD.title)
             }
         }
 
@@ -88,6 +83,7 @@ class MainFragment : Fragment() {
     }
 
     private fun getPictureOfTheDay(imageUrl: String) {
+        Log.d("Get Picture", imageUrl)
         Picasso.with(binding.activityMainImageOfTheDay.context).load(imageUrl).fit().centerCrop()
             .networkPolicy(NetworkPolicy.OFFLINE)
             .placeholder(R.drawable.placeholder_picture_of_day)

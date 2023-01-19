@@ -4,9 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.udacity.asteroidradar.PictureOfDay
 
-@Database(entities = [AsteroidEntities::class, PotD::class], version = 2, exportSchema = false)
+@Database(entities = [AsteroidEntities::class, PotD::class], version = 3, exportSchema = false)
 abstract class AsteroidDatabase : RoomDatabase() {
 
     abstract fun asteroidDao(): AsteroidDao

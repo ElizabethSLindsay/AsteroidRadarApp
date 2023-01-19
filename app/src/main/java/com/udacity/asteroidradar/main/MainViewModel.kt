@@ -38,13 +38,15 @@ class MainViewModel( private val dao: AsteroidDao) : ViewModel() {
     }
 
     fun filterAsteroids(filter: String) {
-        Log.d("Filter", filter)
-        if (filter == "Week") {
-            allAsteroids = dao.getAsteroids().asLiveData()
-        } else if (filter == "Today") {
-            allAsteroids = dao.getToday().asLiveData()
+        viewModelScope.launch {
+            Log.d("Filter", filter)
+            if (filter == "Week") {
+                dao.filterAll()
+            } else if (filter == "Today") {
+                dao.filterToday()
+            }
+            Log.d("Filtered",allAsteroids.value.toString())
         }
-        Log.d("Filtered",allAsteroids.value.toString())
     }
 
     fun getAsteroidData() {
