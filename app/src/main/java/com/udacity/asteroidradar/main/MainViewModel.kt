@@ -57,7 +57,7 @@ class MainViewModel( private val dao: AsteroidDao) : ViewModel() {
                         AsteroidApi.retrofitService.getAsteroids(
                             "",
                             "",
-                            "SNrG4C86m2Zxhx9b7HAAnOGdJQqB6BzYRLlTi0fp"
+                            "DEMO_KEY"
                         )
                     )
                 )
@@ -76,7 +76,7 @@ class MainViewModel( private val dao: AsteroidDao) : ViewModel() {
     fun getPictureOfTheDay() {
         viewModelScope.launch {
             try {
-                val potd: PictureOfDay = parsePotD(JSONObject(PotDAPI.retrofitService.getPotD("SNrG4C86m2Zxhx9b7HAAnOGdJQqB6BzYRLlTi0fp")))
+                val potd: PictureOfDay = parsePotD(JSONObject(PotDAPI.retrofitService.getPotD("DEMO_KEY")))
                 dao.clearPotD()
 
                 dao.insertPotD(PotD(title = potd.title, mediaType = potd.mediaType, url = potd.url))
