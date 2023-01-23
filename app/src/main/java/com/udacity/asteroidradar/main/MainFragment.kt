@@ -85,7 +85,7 @@ class MainFragment : Fragment() {
     private fun getPictureOfTheDay(imageUrl: String) {
         Log.d("Get Picture", imageUrl)
         Picasso.with(binding.activityMainImageOfTheDay.context).load(imageUrl).fit().centerCrop()
-            .networkPolicy(NetworkPolicy.OFFLINE)
+//            .networkPolicy(NetworkPolicy.OFFLINE)
             .placeholder(R.drawable.placeholder_picture_of_day)
             .error(R.drawable.ic_connection_error)
             .into(binding.activityMainImageOfTheDay)

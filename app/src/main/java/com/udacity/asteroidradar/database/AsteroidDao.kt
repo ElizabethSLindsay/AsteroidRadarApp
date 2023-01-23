@@ -48,7 +48,7 @@ interface AsteroidDao {
             END
     """
     )
-    fun filterToday()
+    suspend fun filterToday()
 
     @Query(
         """
@@ -59,7 +59,7 @@ interface AsteroidDao {
             END
     """
     )
-    fun filterAll()
+    suspend fun filterAll()
 
     @Query(
         """
